@@ -1,12 +1,13 @@
 import * as React from "react";
 import {motion} from "framer-motion";
+import {coords, PathGenerator} from "./PathGenerator";
 
 const icon = {
     hidden: {
         opacity: 0,
         pathLength: 0,
         fill: 'none',
-        strokeWidth: 5,
+        strokeWidth: 10,
         stroke: 'orange'
     },
     visible: {
@@ -16,109 +17,8 @@ const icon = {
     }
 };
 
-interface coords {
-    x: number;
-    y: number;
-    direction: string;
-    pathPart: string;
-}
 
-const increment = 50;
-const generatePath = (x: number, y: number): string => {
-
-    let path = `M ${x} ${y} `;
-    const start: coords = {
-        x: x,
-        y: x,
-        direction: 'up',
-        pathPart: ''
-    }
-
-    let target: coords;
-    target = nextCoordinates(start, 'f');
-    path += target.pathPart;
-    target = nextCoordinates(start, 'l');
-    path += target.pathPart;
-    target = nextCoordinates(start, 'f');
-    path += target.pathPart;
-    console.log("generated path:", path);
-    return path;
-}
-
-
-const nextCoordinates = (lastCoords: coords, newDirection: string): coords => {
-
-    let coordinates: coords = {
-        x: lastCoords.x,
-        y: lastCoords.y,
-        direction: '',
-        pathPart: ''
-    };
-
-    //forward
-    if (newDirection === 'f') {
-        if (lastCoords.direction === 'up') {
-            coordinates.x += increment;
-            coordinates.pathPart = 'h ' + increment + ' ';
-            coordinates.direction = 'up';
-        }
-        if (lastCoords.direction === 'down') {
-            coordinates.x -= increment;
-            coordinates.pathPart = 'h -' + increment + ' ';
-            coordinates.direction = 'down';
-        }
-    }
-
-    //turn left
-    if (newDirection === 'l') {
-        if (lastCoords.direction === 'up') {
-            coordinates.x -= increment;
-            coordinates.pathPart = 'v -' + increment + ' ';
-            coordinates.direction = 'left';
-        }
-        if (lastCoords.direction === 'down') {
-            coordinates.x += increment;
-            coordinates.pathPart = 'v ' + increment + ' ';
-            coordinates.direction = 'right';
-        }
-        if (lastCoords.direction === 'left') {
-            coordinates.y += increment;
-            coordinates.pathPart = 'h ' + increment + ' ';
-            coordinates.direction = 'down';
-        }
-        if (lastCoords.direction === 'right') {
-            coordinates.y -= increment;
-            coordinates.pathPart = 'v -' + increment + ' ';
-            coordinates.direction = 'up';
-        }
-    }
-
-    //turn right
-    if (newDirection === 'r') {
-        if (lastCoords.direction === 'up') {
-            coordinates.y += increment;
-            coordinates.pathPart = 'v ' + increment + ' ';
-            coordinates.direction = 'right';
-        }
-        if (lastCoords.direction === 'down') {
-            coordinates.x -= increment;
-            coordinates.pathPart = 'v -' + increment + ' ';
-            coordinates.direction = 'left';
-        }
-        if (lastCoords.direction === 'left') {
-            coordinates.y -= increment;
-            coordinates.pathPart = 'v -' + increment + ' ';
-            coordinates.direction = 'up';
-        }
-        if (lastCoords.direction === 'right') {
-            coordinates.y += increment;
-            coordinates.pathPart = 'v ' + increment + ' ';
-            coordinates.direction = 'down';
-        }
-    }
-
-    return coordinates;
-}
+const pathGenerator = new PathGenerator(100);
 
 
 export const Example = () => (
@@ -129,7 +29,7 @@ export const Example = () => (
             className="item"
         >
             <motion.path
-                d={generatePath(100, 100)}
+                d={pathGenerator.generatePath(100, 100)}
                 variants={icon}
                 initial="hidden"
                 animate="visible"
