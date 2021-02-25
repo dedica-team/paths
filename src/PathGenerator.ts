@@ -126,7 +126,14 @@ export class PathGenerator {
     }
 
 
-    generatePath = (x: number, y: number): string => {
+    /**
+     * Generates a SVG path with starting point and direction commands.
+     *
+     * @param x start x
+     * @param y start y
+     * @param commands f/l/r (forward, left, right)
+     */
+    generatePath = (x: number, y: number, commands: string[]): string => {
 
         let path = `M ${x} ${y} `;
         let target: coords = {
@@ -136,9 +143,8 @@ export class PathGenerator {
             pathPart: []
         };
 
-        ['f', 'l', 'f', 'r'].forEach(dir => {
+        commands.forEach(dir => {
             target = this.nextCoordinates(target, dir);
-            console.log(target)
         })
 
         console.debug("generated path:", path + target.pathPart.join(' '));

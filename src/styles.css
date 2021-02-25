@@ -8,7 +8,7 @@ body {
   justify-content: center;
   align-items: center;
   perspective: 500px;
-  background: linear-gradient(180deg, #05f, #09f);
+  background: #333;
 }
 
 .container {
