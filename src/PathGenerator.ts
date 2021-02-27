@@ -55,6 +55,8 @@ export class PathGenerator {
             let pop = coordinates.pathParts.pop(); //remove
             if (pop) {
                 coordinates.pathParts.push(pop.replace('l', 'q')); //turn former end into control point
+            } else {
+                coordinates.pathParts.push('l'); //init drawing
             }
             if (lastCoords.direction === 'up') {
                 coordinates.x -= this.increment;
@@ -91,6 +93,8 @@ export class PathGenerator {
             let pop = coordinates.pathParts.pop(); //remove
             if (pop) {
                 coordinates.pathParts.push(pop.replace('l', 'q')); //control point
+            } else {
+                coordinates.pathParts.push('l'); //init drawing
             }
             if (lastCoords.direction === 'up') {
                 coordinates.x += this.increment;
@@ -139,13 +143,14 @@ export class PathGenerator {
             x: x,
             y: y,
             direction: 'up',
-            pathParts: [`M ${x} ${y} `]
+            pathParts: []
         };
 
         commands.forEach(dir => {
             target = this.nextCoordinates(target, dir);
         })
 
+        target.pathParts.unshift(`M ${x} ${y} `)
         console.debug("generated path:", target.pathParts.join(' '));
         return target;
     }
