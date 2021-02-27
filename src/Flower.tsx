@@ -1,67 +1,48 @@
 import {motion} from "framer-motion";
 import * as React from "react";
 import {coords, PathGenerator} from "./PathGenerator";
-
-const twig = {
-    hidden: {
-        opacity: 0,
-        pathLength: 0,
-        fill: 'none',
-        strokeWidth: 20,
-        stroke: 'darkorange'
-    },
-    visible: {
-        opacity: 1,
-        pathLength: 1,
-        fill: 'none'
-    }
-};
-
-
-const blossom = {
-    hidden: {
-        opacity: 0,
-        fill: 'none',
-        strokeWidth: 10,
-        r: 5
-    },
-    visible: {
-        opacity: 1,
-        fill: 'white',
-        r: 30,
-    }
-};
-
-
-const blossomCore = {
-    hidden: {
-        opacity: 0,
-        fill: 'none',
-        strokeWidth: 10,
-        r: 5
-    },
-    visible: {
-        opacity: 1,
-        fill: 'darkorange',
-        r: 20,
-    }
-};
+import {Blossom} from "./Blossom";
 
 interface FlowerProps {
     x: number;
     y: number;
     commands: string[];
+    pathGenerator: PathGenerator;
+    scaleFactor: number;
 }
+
+export const flowerTypes = [
+    ['f'],
+    ['f', 'f'],
+    ['f', 'f', 'f'],
+    ['f', 'f', 'l', 'r'],
+    ['f', 'l', 'r', 'f'],
+    ['f', 'l', 'r', 'f'],
+];
 
 export const Flower = (props: FlowerProps) => {
 
-    const pathGenerator = new PathGenerator(100);
-    const target: coords = pathGenerator.generatePath(props.x, props.y, props.commands);
+    const target: coords = props.pathGenerator.generatePath(props.x, props.y, props.commands);
     const path = target.pathParts.join(' ')
     const duration = 2;
-    console.log(target);
 
     const initialDelay = Math.random();
+
+    const twig = {
+        hidden: {
+            opacity: 0,
+            pathLength: 0,
+            fill: 'none',
+            strokeWidth: 20 * props.scaleFactor,
+            stroke: 'darkorange'
+        },
+        visible: {
+            opacity: 1,
+            pathLength: 1,
+            fill: 'none'
+        }
+    };
+
 
     return <motion.g>
         <motion.path
@@ -77,22 +58,10 @@ export const Flower = (props: FlowerProps) => {
             }}
         />
         <motion.g>
-            <motion.circle variants={blossom}
-                           initial="hidden"
-                           animate="visible"
-                           r={30} x={target.x} y={target.y}
-                           transition={{
-                               default: {duration: 1, ease: "easeInOut"},
-                               delay: initialDelay + duration
-                           }}/>
-            <motion.circle variants={blossomCore}
-                           initial="hidden"
-                           animate="visible"
-                           r={10} x={target.x} y={target.y}
-                           transition={{
-                               default: {duration: 1, ease: "easeInOut"},
-                               delay: initialDelay + duration
-                           }}/>
+            <Blossom x={target.x} y={target.y} initialDelay={initialDelay} radius={30 * props.scaleFactor}
+                     fill={'white'}/>
+            <Blossom x={target.x} y={target.y} initialDelay={initialDelay} radius={10 * props.scaleFactor}
+                     fill={'darkorange'}/>
         </motion.g>
     </motion.g>
 }
