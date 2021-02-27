@@ -18,6 +18,8 @@ export const flowerTypes = [
     ['f', 'f', 'l', 'r'],
     ['f', 'l', 'r', 'f'],
     ['f', 'l', 'r', 'f'],
+    ['f', 'r', 'l'],
+    ['f', 'r', 'l', 'f'],
 ];
 
 export const Flower = (props: FlowerProps) => {
