@@ -136,13 +136,14 @@ export class PathGenerator {
      * @param x start x
      * @param y start y
      * @param commands f/l/r (forward, left, right)
+     * @param direction initial direction (up, down, left, right)
      */
-    generatePath = (x: number, y: number, commands: string[]): coords => {
+    generatePath = (x: number, y: number, commands: string[], direction?: string): coords => {
 
         let target: coords = {
             x: x,
             y: y,
-            direction: 'up',
+            direction: direction || 'up',
             pathParts: []
         };
 

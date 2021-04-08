@@ -1,7 +1,7 @@
 import {motion} from "framer-motion";
 import * as React from "react";
-import {coords, PathGenerator} from "./PathGenerator";
-import {Blossom} from "./Blossom";
+import {coords, PathGenerator} from "../parts/PathGenerator";
+import {Blossom} from "../parts/Blossom";
 
 interface BirdProps {
     x: number;

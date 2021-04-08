@@ -1,34 +1,26 @@
 import {motion} from "framer-motion";
 import * as React from "react";
-import {coords, PathGenerator} from "./PathGenerator";
-import {Blossom} from "./Blossom";
+import {coords, PathGenerator} from "../parts/PathGenerator";
+import {Blossom} from "../parts/Blossom";
 
-interface FlowerProps {
+interface PathProps {
     x: number;
     y: number;
     commands: string[];
     pathGenerator: PathGenerator;
     scaleFactor: number;
+    duration?: number;
+    initialDelay?: number;
+    initialDirection?: string;
+    child?: React.ReactElement;
 }
 
-export const flowerTypes = [
-    ['f'],
-    ['f', 'f'],
-    ['f', 'f', 'f'],
-    ['f', 'f', 'l', 'r'],
-    ['f', 'l', 'r', 'f'],
-    ['f', 'l', 'r', 'f'],
-    ['f', 'r', 'l'],
-    ['f', 'r', 'l', 'f'],
-];
+export const Path = (props: PathProps) => {
 
-export const Flower = (props: FlowerProps) => {
-
-    const target: coords = props.pathGenerator.generatePath(props.x, props.y, props.commands);
+    const target: coords = props.pathGenerator.generatePath(props.x, props.y, props.commands, props.initialDirection);
     const path = target.pathParts.join(' ')
-    const duration = 2;
-
-    const initialDelay = Math.random();
+    const duration = props.duration || 2;
+    const initialDelay = props.initialDelay || 0;
 
     const twig = {
         hidden: {
@@ -59,6 +51,7 @@ export const Flower = (props: FlowerProps) => {
                 delay: initialDelay
             }}
         />
+        {props.child}
         <motion.g>
             <Blossom x={target.x} y={target.y} initialDelay={initialDelay} radius={30 * props.scaleFactor}
                      fill={'white'}/>

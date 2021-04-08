@@ -1,8 +1,9 @@
 import * as React from "react";
 import { render } from "react-dom";
-import { Example } from "./Example";
+//import { Landscape } from "./scenes/Landscape";
 import "./styles.css";
+import {Octo} from "./scenes/Octo";
 
-const App = () => <Example />;
+const App = () => <Octo />;
 
 render(<App />, document.getElementById("root"));

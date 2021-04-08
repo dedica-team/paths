@@ -1,9 +1,9 @@
 import * as React from "react";
 import {motion} from "framer-motion";
-import {Flower, flowerTypes} from "./Flower";
-import {PathGenerator} from "./PathGenerator";
-import {Blossom} from "./Blossom";
-import {Bird} from "./Bird";
+import {Flower, flowerTypes} from "../things/Flower";
+import {PathGenerator} from "../parts/PathGenerator";
+import {Blossom} from "../parts/Blossom";
+import {Bird} from "../things/Bird";
 
 /**
  *
@@ -44,7 +44,7 @@ const seed = (front: number, horizon: number, width: number): JSX.Element[] => {
 
 const birdGen = new PathGenerator(10);
 const seeds = seed(780, 400, 800);
-export const Example = () => (
+export const Landscape = () => (
     <motion.svg
         xmlns="http://www.w3.org/2000/svg"
         viewBox="0 300 800 500"
